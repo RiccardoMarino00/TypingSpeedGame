@@ -18,7 +18,7 @@ function startTimer() {
 
     if(playClick == false) {
             const randomSentence = faker.hacker.phrase();
-            phrase.textContent = randomSentence
+            getNextQuote();
             let sec = 59;
             playClick = true;
             interval = setInterval(() => {
@@ -49,3 +49,18 @@ function restartTimer() {
 play.addEventListener('click', startTimer );
 
 restart.addEventListener('click', restartTimer );
+
+
+// API per frasi
+const RANDOM_QUOTE_API_URL = 'http://api.quotable.io/random';
+
+function getRandomQuote() {
+    return fetch(RANDOM_QUOTE_API_URL)
+    .then(response => response.json())
+    .then(data => data.content)
+}
+
+async function getNextQuote() {
+    phrase.textContent = await getRandomQuote()
+    console.log(phrase)
+}
