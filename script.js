@@ -52,7 +52,8 @@ restart.addEventListener('click', restartTimer );
 
 
 // API per frasi
-const RANDOM_QUOTE_API_URL = 'http://api.quotable.io/random';
+// const RANDOM_QUOTE_API_URL = 'http://api.quotable.io/random';
+const RANDOM_QUOTE_API_URL = 'http://api.quotable.io/random?minLength=300&maxLength=500';
 
 function getRandomQuote() {
     return fetch(RANDOM_QUOTE_API_URL)
