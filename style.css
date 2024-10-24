@@ -115,3 +115,15 @@ input:focus::placeholder {
 .green {
     color: green;
 }
+
+word {
+    padding-left: 8px;
+}
+
+letter {
+    padding-left: 1px;
+}
+
+.phrase-container {
+    max-width: 500px;
+}

@@ -88,14 +88,17 @@ async function getNextQuote() {
 
 input.addEventListener('input', () => {
     const inputArray = input.value.split('');
+    let letter = document.querySelectorAll('letter')
     const length = Math.min(inputArray.length, lettere.length);
              for (let i = 0; i < length; i++) {
+                letter 
                 if (inputArray[i] === lettere[i]) {
                         console.log('letter giusta')
                         console.log(tagletters[i])
+                        letter[i].classList.add('green');
                 } else {
                         console.log('letter sbagliata')
-                        break
+                        letter[i].classList.add('red');
                 }
             }    
 })
