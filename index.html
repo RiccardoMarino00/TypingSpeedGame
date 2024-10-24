@@ -6,13 +6,15 @@
     <link rel="stylesheet" href="style.css">
     <link rel='preconnect' href='https://fonts.googleapis.com'>
     <link href='https://fonts.googleapis.com/css2?family=Voces&display=swap' rel='stylesheet' type='text/css'>
-    <script src="https://cdn.jsdelivr.net/npm/@faker-js/faker@8.0.0/dist/faker.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@faker-js/faker@8.0.0/dist/faker.umd.min.js" defer="defer"></script>
     <title>Typing Speed Game</title>
 </head>
 <body>
         <div class="container">
             <h1>Typing Speed Game</h1>
-            <p class="phrase">Ale fa i pompini</p>
+        
+            <div class="phrase">Ale fa i pompini...e gli piace</div>
+            <div class="output"></div>
             <form action="">
                 <input type="text" placeholder="..." class="user-input">
             </form>
@@ -25,6 +27,6 @@
                 <p class="restart">Riavvia</p>
             </div>
         </div>
-        <script type="module" src="script.js"></script>
+        <script type="module" src="script.js" defer="defer"></script>
 </body>
 </html>

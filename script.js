@@ -1,7 +1,5 @@
-import { faker } from 'https://esm.sh/@faker-js/faker';
 
-
-
+let output = document.querySelector('.output');
 let phrase = document.querySelector('.phrase');
 let input = document.querySelector('.user-input');
 let time = document.querySelector('.time');
@@ -10,15 +8,33 @@ let play = document.querySelector('.play');
 let restart = document.querySelector('.restart');
 let interval;
 let playClick = false;
+let parole = '';
+let tagletters = [];
+let lettere = [];
+let isCorrect = true;
 
-console.log(phrase, input, time, score, play, restart);
+function creatag() {
+    parole = phrase.textContent.split(' ');
+    parole.forEach(parola => {
+        const tagword = document.createElement('word');
+        for (let lettera of parola) {
+            const tagletter = document.createElement('letter');
+            tagletter.textContent = lettera;
+            tagletters.push(lettera);
+            lettere.push(lettera);
+            tagword.appendChild(tagletter);
+        }
+        phrase.innerHTML = '';
+        output.appendChild(tagword);
 
+    });
 
-function startTimer() {
+}
 
+async function startTimer() {
     if(playClick == false) {
-            const randomSentence = faker.hacker.phrase();
-            getNextQuote();
+            await getNextQuote();
+            creatag();
             let sec = 59;
             playClick = true;
             interval = setInterval(() => {
@@ -32,7 +48,7 @@ function startTimer() {
                 playClick = false;
             }, 60000);
         
-            console.log('Frase casuale:', randomSentence);
+            // console.log('Frase casuale:', randomSentence);
     }
 }
 
@@ -42,6 +58,7 @@ function restartTimer() {
     clearInterval(interval);
     playClick = false;
     phrase.textContent = 'Ale fa i pompini';
+    output.textContent = [];
 }
 
 
@@ -65,3 +82,20 @@ async function getNextQuote() {
     phrase.textContent = await getRandomQuote()
     console.log(phrase)
 }
+
+
+
+
+input.addEventListener('input', () => {
+    const inputArray = input.value.split('');
+    const length = Math.min(inputArray.length, lettere.length);
+             for (let i = 0; i < length; i++) {
+                if (inputArray[i] === lettere[i]) {
+                        console.log('letter giusta')
+                        console.log(tagletters[i])
+                } else {
+                        console.log('letter sbagliata')
+                        break
+                }
+            }    
+})
