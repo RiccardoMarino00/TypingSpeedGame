@@ -109,11 +109,11 @@ input:focus::placeholder {
 }
 
 .red {
-    color: red;
+    color: rgb(149, 14, 14);
 }
 
 .green {
-    color: green;
+    color: rgb(216, 235, 49);
 }
 
 word {
@@ -124,6 +124,9 @@ letter {
     padding-left: 1px;
 }
 
-.phrase-container {
-    max-width: 500px;
+.output {
+    max-width: 700px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
 }

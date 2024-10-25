@@ -33,6 +33,7 @@ function creatag() {
 
 async function startTimer() {
     if(playClick == false) {
+            input.value = '';
             await getNextQuote();
             creatag();
             let sec = 59;
@@ -59,6 +60,7 @@ function restartTimer() {
     playClick = false;
     phrase.textContent = 'Ale fa i pompini';
     output.textContent = [];
+    input.value = '';
 }
 
 
