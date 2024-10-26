@@ -24,7 +24,7 @@ body {
 }
 
 form input {
-    width: 500px;
+    width: 200px;
     background-color: transparent;
     outline: none;
     color: whitesmoke;
@@ -65,18 +65,20 @@ input:focus::placeholder {
 .container h1 {
     font-size: 50px;
     text-shadow: 0px 0px 9px rgba(0, 0, 0, 1);
+    margin-top: 50px;
 }
 
 
 .stats {
-    border: 4px solid whitesmoke;
+    /* border: 4px solid whitesmoke; */
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
     border-radius: 10px ;
     width: 200px;
     position: absolute;
     bottom: 10px;
     left: 10px;
     text-shadow: 0px 0px 9px rgba(0, 0, 0, 1);
-    box-shadow: 0px 0px 9px rgba(0, 0, 0, 1);
+    /* box-shadow: 0px 0px 9px rgba(0, 0, 0, 1); */
 }
 
 .time {
@@ -98,6 +100,8 @@ input:focus::placeholder {
 
 .restart {
     cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    padding: 10px;
 }
 
 .start .play:hover {
@@ -129,4 +133,36 @@ letter {
     display: flex;
     flex-wrap: wrap;
     justify-content: left;
+}
+
+.cursor {
+    border-right: 1px solid black;
+}
+
+@media screen and (max-width: 768px ) {
+    .container h1 {
+        font-size: 32px;
+        margin-top: 88px;
+    }
+
+    .stats {
+        /* border: 4px solid whitesmoke; */
+        border-radius: 10px ;
+        width: 100px;
+        max-height: 53px;
+        position: absolute;
+       bottom: 10px;
+    left: 10px;
+        text-shadow: 0px 0px 9px rgba(0, 0, 0, 1);
+        /* box-shadow: 0px 0px 9px rgba(0, 0, 0, 1); */
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .time {
+        border-bottom: none;
+        border-right: 3px solid whitesmoke;
+        padding-bottom: 0;
+        padding-right: 6px;
+    }
 }

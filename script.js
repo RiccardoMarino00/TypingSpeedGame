@@ -6,6 +6,7 @@ let time = document.querySelector('.time');
 let score = document.querySelector('.score');
 let play = document.querySelector('.play');
 let restart = document.querySelector('.restart');
+let video = document.querySelector('.video');
 let interval;
 let playClick = false;
 let parole = '';
@@ -34,6 +35,7 @@ function creatag() {
 async function startTimer() {
     if(playClick == false) {
             input.value = '';
+            input.focus();
             await getNextQuote();
             creatag();
             let sec = 59;
@@ -47,6 +49,9 @@ async function startTimer() {
             setTimeout(function() {
                 clearInterval(interval);
                 playClick = false;
+                output.textContent = [];
+                phrase.textContent = 'Try Again';
+                input.value = '';
             }, 60000);
         
             // console.log('Frase casuale:', randomSentence);
@@ -58,9 +63,10 @@ function restartTimer() {
     time.innerHTML = '01:00'
     clearInterval(interval);
     playClick = false;
-    phrase.textContent = 'Ale fa i pompini';
+    phrase.textContent = 'Play';
     output.textContent = [];
     input.value = '';
+
 }
 
 
@@ -94,6 +100,7 @@ input.addEventListener('input', () => {
     const length = Math.min(inputArray.length, lettere.length);
              for (let i = 0; i < length; i++) {
                 letter 
+                inputArray
                 if (inputArray[i] === lettere[i]) {
                         console.log('letter giusta')
                         console.log(tagletters[i])
