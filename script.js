@@ -34,9 +34,13 @@ function creatag() {
 
 async function startTimer() {
     if(playClick == false) {
+            score.textContent = 'score: 0'
             input.value = '';
             input.focus();
             await getNextQuote();
+            console.log(output)
+            tagletters = [];
+            lettere = [];
             creatag();
             let sec = 59;
             playClick = true;
@@ -50,7 +54,7 @@ async function startTimer() {
                 clearInterval(interval);
                 playClick = false;
                 output.textContent = [];
-                phrase.textContent = 'Try Again';
+                phrase.textContent = 'Try Again';  //quando clicclo try again l'output contiene la frase giusta però nella funzione di confronto delle lettere le da tutte sbagliate
                 input.value = '';
             }, 60000);
         
@@ -66,7 +70,7 @@ function restartTimer() {
     phrase.textContent = 'Play';
     output.textContent = [];
     input.value = '';
-
+    score.textContent = 'score: 0'
 }
 
 
@@ -95,19 +99,45 @@ async function getNextQuote() {
 
 
 input.addEventListener('input', () => {
-    const inputArray = input.value.split('');
-    let letter = document.querySelectorAll('letter')
-    const length = Math.min(inputArray.length, lettere.length);
+    let inputArray = input.value.split('');
+    console.log(inputArray)
+    const length = Math.min(inputArray.length, lettere.length); //controlla lunghezza input e lunghezza frase (per far si che non vada oltre a scrivere)
+    // letter.forEach((el, i)  => {
+    //     el.classList.remove('.red')
+    //     el.classList.remove('.green')
+
+    // })  
+
+    //PROBLEMA: inputArray contiene tutte le lettere che l'utente digita, per l'incremento dei punti prende quindi ogni valore
+
+    
              for (let i = 0; i < length; i++) {
+               
+
+                let letter = document.querySelectorAll('letter')
                 letter 
                 inputArray
+                console.log(letter[i])
+                console.log(inputArray)
+
+
                 if (inputArray[i] === lettere[i]) {
-                        console.log('letter giusta')
+                        console.log('letter giusta', inputArray[i])
+                        console.log(letter[i])
                         console.log(tagletters[i])
                         letter[i].classList.add('green');
+                        letter[i].classList.remove('red');
+                        let currentText = score.textContent
+                        let currentScore  = parseInt(currentText.split(': ')[1]);
+                        currentScore += 1;
+                        console.log(currentScore);
+                        score.textContent = `Score: ${currentScore}`;
+                        
                 } else {
-                        console.log('letter sbagliata')
+                        console.log('letter sbagliata' , inputArray[i])
                         letter[i].classList.add('red');
+                        letter[i].classList.remove('green');
+
                 }
             }    
 })
