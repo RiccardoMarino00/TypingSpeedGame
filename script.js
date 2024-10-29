@@ -13,6 +13,7 @@ let parole = '';
 let tagletters = [];
 let lettere = [];
 let isCorrect = true;
+let previousLength = 0;
 
 function creatag() {
     parole = phrase.textContent.split(' ');
@@ -101,6 +102,7 @@ async function getNextQuote() {
 input.addEventListener('input', () => {
     let inputArray = input.value.split('');
     console.log(inputArray)
+    const lengthInput = inputArray.length;
     const length = Math.min(inputArray.length, lettere.length); //controlla lunghezza input e lunghezza frase (per far si che non vada oltre a scrivere)
     // letter.forEach((el, i)  => {
     //     el.classList.remove('.red')
@@ -111,8 +113,9 @@ input.addEventListener('input', () => {
     //PROBLEMA: inputArray contiene tutte le lettere che l'utente digita, per l'incremento dei punti prende quindi ogni valore
 
     
-             for (let i = 0; i < length; i++) {
+            //  for (let i = 0; i < lengthInput; i++) {
                
+            let i = lengthInput - 1;
 
                 let letter = document.querySelectorAll('letter')
                 letter 
@@ -120,8 +123,8 @@ input.addEventListener('input', () => {
                 console.log(letter[i])
                 console.log(inputArray)
 
-
-                if (inputArray[i] === lettere[i]) {
+                if (lengthInput > previousLength) {
+                    if (inputArray[i] === lettere[i]) {
                         console.log('letter giusta', inputArray[i])
                         console.log(letter[i])
                         console.log(tagletters[i])
@@ -139,5 +142,7 @@ input.addEventListener('input', () => {
                         letter[i].classList.remove('green');
 
                 }
-            }    
+                }
+            // }    
+            previousLength = lengthInput;
 })
