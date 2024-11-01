@@ -42,6 +42,7 @@ async function startTimer() {
             console.log(output)
             tagletters = [];
             lettere = [];
+            score.textContent = 'Score: 0';
             creatag();
             let sec = 59;
             playClick = true;
@@ -55,11 +56,10 @@ async function startTimer() {
                 clearInterval(interval);
                 playClick = false;
                 output.textContent = [];
-                phrase.textContent = 'Try Again';  //quando clicclo try again l'output contiene la frase giusta però nella funzione di confronto delle lettere le da tutte sbagliate
+                phrase.textContent = 'Try Again';  
                 input.value = '';
             }, 60000);
         
-            // console.log('Frase casuale:', randomSentence);
     }
 }
 
@@ -82,7 +82,6 @@ restart.addEventListener('click', restartTimer );
 
 
 // API per frasi
-// const RANDOM_QUOTE_API_URL = 'http://api.quotable.io/random';
 const RANDOM_QUOTE_API_URL = 'http://api.quotable.io/random?minLength=300&maxLength=500';
 
 function getRandomQuote() {
@@ -100,49 +99,51 @@ async function getNextQuote() {
 
 
 input.addEventListener('input', () => {
-    let inputArray = input.value.split('');
+    let inputArray = input.value.split(''); // Divide l'input dell'utente in un array di lettere
     console.log(inputArray)
+
     const lengthInput = inputArray.length;
-    const length = Math.min(inputArray.length, lettere.length); //controlla lunghezza input e lunghezza frase (per far si che non vada oltre a scrivere)
-    // letter.forEach((el, i)  => {
-    //     el.classList.remove('.red')
-    //     el.classList.remove('.green')
+    const length = Math.min(inputArray.length, lettere.length); //Math.min garantisce che non si vada mai oltre la lunghezza della frase stessa.
 
-    // })  
-
-    //PROBLEMA: inputArray contiene tutte le lettere che l'utente digita, per l'incremento dei punti prende quindi ogni valore
-
-    
-            //  for (let i = 0; i < lengthInput; i++) {
+    let currentText = score.textContent;
+    let currentScore  = parseInt(currentText.split(': ')[1]);
                
-            let i = lengthInput - 1;
-
+                let i = lengthInput - 1; //prende indice ultima lettera digitata
+                let j = lengthInput;
                 let letter = document.querySelectorAll('letter')
                 letter 
                 inputArray
                 console.log(letter[i])
                 console.log(inputArray)
-
-                if (lengthInput > previousLength) {
+                if (lengthInput > previousLength) { // Verifica se l'input è più lungo rispetto al precedente (nuova lettera inserita)
                     if (inputArray[i] === lettere[i]) {
                         console.log('letter giusta', inputArray[i])
                         console.log(letter[i])
                         console.log(tagletters[i])
                         letter[i].classList.add('green');
                         letter[i].classList.remove('red');
-                        let currentText = score.textContent
-                        let currentScore  = parseInt(currentText.split(': ')[1]);
+
                         currentScore += 1;
                         console.log(currentScore);
                         score.textContent = `Score: ${currentScore}`;
                         
-                } else {
+                    } else {
                         console.log('letter sbagliata' , inputArray[i])
                         letter[i].classList.add('red');
                         letter[i].classList.remove('green');
 
+                    }
+                }  else {
+                    console.log('ha cancellato')
+                    if(letter[j].classList.contains('green')) {
+                        letter[j].classList.remove('green');
+                        currentScore -= 1;
+                        score.textContent = `Score: ${currentScore}`;
+                    } else if (letter[j].classList.contains('red')) {
+                        letter[j].classList.remove('red');
+
+                    }
+
                 }
-                }
-            // }    
             previousLength = lengthInput;
 })
