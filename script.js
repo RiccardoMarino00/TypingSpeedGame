@@ -17,37 +17,54 @@ let lettere = [];
 let isCorrect = true;
 let previousLength = 0;
 let highestScore = 0;
-
+let isPlaying = false;
+let countdownInterval;
 
                                                                                     //FUNZIONI
 
-//riavvia timer
-function restartTimer() {
-    time.innerHTML = '60'
-    clearInterval(interval);
-    playClick = false;
-    phrase.textContent = 'Play';
-    output.textContent = [];
-    input.value = '';
-    score.textContent = 'score: 0'
-}
+
 
 
 //timer conto alla rovescia
 function countdown() {
-    let remain = +time.innerHTML - 1;
+    let remain = parseInt(time.innerHTML);
     time.innerHTML = remain;
-    if (remain > 0) {
-        setTimeout(countdown, 1000)
-    }
+    countdownInterval = setInterval(() => {
+        remain--;
+        time.innerHTML = remain;
+
+        if (remain <= 0) {
+            clearInterval(countdownInterval)
+            isPlaying = false;
+        }
+    }, 1000)
+
+    
+
 }
 
 
 //clicco play
 async function startTimer() {
-    await getNextQuote();
-    setTimeout(countdown, 1000)
-    input.focus()
+    if (!isPlaying) {
+        isPlaying = true;
+        await getNextQuote();
+        input.focus()
+    }
+    
+}
+
+//riavvia timer
+function restartTimer() {
+    time.innerHTML = '60'
+    clearInterval(countdownInterval);
+    playClick = false;
+    phrase.textContent = 'Play';
+    output.textContent = [];
+    input.value = '';
+    score.textContent = 'score: 0'
+    isPlaying = false;
+
 }
 
 
@@ -78,11 +95,13 @@ async function getNextQuote() {
 
                                                                                     //EVENT LISTENER
 
+let currentScore = 0;
+
 input.addEventListener('input', () => {
+    countdown()
     const span = phrase.querySelectorAll('span')
     const inputValue = input.value.split('');
     const lengthInput = input.value.length;
-    let currentScore = 0;
  
     span.forEach((outputSpan, i) => {
             const inputChar = inputValue[i]
@@ -90,23 +109,46 @@ input.addEventListener('input', () => {
                     if (inputChar === undefined) {
                         outputSpan.classList.remove('green')
                         outputSpan.classList.remove('red')
+                        
 
                     } else if (inputChar === outputSpan.innerText && lengthInput > previousLength) {
-                        outputSpan.classList.add('green')
-                        outputSpan.classList.remove('red')
-                        currentScore += 1;
-                        score.textContent = `Score: ${currentScore}`;
-                     
+                            
+                            if (!outputSpan.classList.contains('green')) {
+                                outputSpan.classList.add('green')
+                                outputSpan.classList.remove('red')
+                                currentScore += 1;
+                                score.textContent = `Score: ${currentScore}`;
+                                // Animazione +1
+                                const plusOne = document.createElement('span');
+                                plusOne.innerText = '+1';
+                                plusOne.classList.add('float-up-right');
+                                score.appendChild(plusOne);
 
+                                // Rimuove l'elemento dopo l'animazione
+                                setTimeout(() => {
+                                    plusOne.remove();
+                                }, 1000);
+                            }
 
                     } else if ( lengthInput === 0) {
                         outputSpan.classList.remove('green')                    //FIXME: Non toglie primo punto fatto quando si cancella
                         outputSpan.classList.add('red')                         //FIXME: Gli spazi li conta come punto fatto
-                        currentScore = 0;                                       //FIXME: togliere possibilità di ricliccare sulla phrase/play
+                        currentScore = 0;                                       //FIXED: togliere possibilità di ricliccare sulla phrase/play
                         score.textContent = `Score: ${currentScore}`;           //FIXME: sitemare riavvia 
                     }  else if (lengthInput < previousLength) {
                         currentScore -= 1;
                         score.textContent = `Score: ${currentScore}`;
+                        // if (outputSpan.classList.contains('green')) {
+                        //     const minusOne = document.createElement('span');
+                        //     minusOne.innerText = '-1';
+                        //     minusOne.classList.add('float-up-error');
+                        //     score.appendChild(minusOne);
+                        //     // Rimuove l'elemento dopo l'animazione
+                        //     setTimeout(() => {
+                        //         minusOne.remove();
+                        //     }, 1000);
+                        // }
+                        
                     } else {
                         outputSpan.classList.remove('green')
                         outputSpan.classList.add('red')

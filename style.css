@@ -35,6 +35,7 @@ html {
     text-shadow: 0px 0px 9px rgba(0, 0, 0, 1);
     /* display: flex;
     justify-content: flex-start; */
+    color: rgb(142, 139, 139);
 
 
     /* overflow-x: auto; */
@@ -145,7 +146,7 @@ input:focus::placeholder {
 }
 
 .red {
-    color: rgb(149, 14, 14);
+    color: rgb(209, 11, 11);
     font-weight: 900;
     text-decoration:underline;
 
@@ -182,6 +183,32 @@ letter {
     border-right: 1px solid black;
 }
 
+
+@keyframes floatUp {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+.float-up-right {
+    position: absolute;
+    color: green;
+    font-size: 1.2em;
+    animation: floatUp 1s ease-out forwards;
+}
+
+.float-up-error {
+    position: absolute;
+    color: red;
+    font-size: 1.2em;
+    animation: floatUp 1s ease-out forwards;
+}
+
 @media screen and (max-width: 768px ) {
     .container h1 {
         font-size: 32px;
@@ -194,8 +221,8 @@ letter {
         width: 100px;
         max-height: 53px;
         position: absolute;
-       bottom: 10px;
-    left: 10px;
+        left: 115px;
+        top: 26px;
         text-shadow: 0px 0px 9px rgba(0, 0, 0, 1);
         /* box-shadow: 0px 0px 9px rgba(0, 0, 0, 1); */
         display: flex;
@@ -208,4 +235,16 @@ letter {
         padding-bottom: 0;
         padding-right: 6px;
     }
+
+    .phrase {
+        font-size: 20px;
+    }
 }
+
+@media screen and (max-width: 1008px) {
+    .phrase {
+        font-size: 25px;
+    }
+}
+
+
