@@ -9,6 +9,7 @@ let score = document.querySelector('.score');
 let play = document.querySelector('.play');
 let restart = document.querySelector('.restart');
 let video = document.querySelector('.video');
+let mistake = document.querySelector('.mistake');
 let interval;
 let playClick = false;
 let parole = '';
@@ -21,6 +22,7 @@ let isPlaying = false;
 let countdownInterval;
 let currentScore = 0;
 let quote = '';
+let mistakes = 0;
 
                                                                                     //FUNZIONI
 
@@ -55,6 +57,7 @@ async function startTimer() {
         await getNextQuote();
         countdown()
         input.focus()
+        mistakes = 0;
 
     }
     
@@ -71,6 +74,7 @@ function restartTimer() {
     score.textContent = 'score: 0'
     isPlaying = false;
     currentScore = 0;
+    mistakes = 0;
 
 }
 
@@ -136,10 +140,10 @@ input.addEventListener('input', () => {
                             }
 
                     } else if ( lengthInput === 0) {
-                        outputSpan.classList.remove('green')                    //FIXME: Non toglie primo punto fatto quando si cancella
+                        outputSpan.classList.remove('green')                    //FIXME: Non funziona più cancellazione punti
                         outputSpan.classList.add('red')                         //FIXME: Gli spazi li conta come punto fatto
                         currentScore = 0;                                       //FIXED: togliere possibilità di ricliccare sulla phrase/play
-                        score.textContent = `Score: ${currentScore}`;           //FIXME: sitemare riavvia 
+                        score.textContent = `Score: ${currentScore}`;           //FIXED: sitemare riavvia 
                     }  else if (lengthInput < previousLength) {                 //TODO: aggiungere numero errori
                         currentScore -= 1;
                         score.textContent = `Score: ${currentScore}`;
@@ -154,9 +158,11 @@ input.addEventListener('input', () => {
                         //     }, 1000);
                         // }
                         
-                    } else {
+                    } else if (inputChar !== outputSpan.innerText) {
                         outputSpan.classList.remove('green')
                         outputSpan.classList.add('red')
+                        mistakes += 1;
+                        mistake.textContent = `Mistakes: ${mistakes}`
                     }
 
                     if (lengthInput === i) {
