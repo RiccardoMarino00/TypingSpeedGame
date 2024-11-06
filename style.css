@@ -29,7 +29,6 @@ html {
 .phrase {
     /* max-width: 80px; */
     /* border: 1px solid whitesmoke; */
-    border-radius: 10px;
     padding: 10px;
     font-size: 40px;
     text-shadow: 0px 0px 9px rgba(0, 0, 0, 1);
@@ -47,35 +46,12 @@ form input {
     /* width: 200px; */
     background-color: transparent;
     outline: none;
-    color: whitesmoke;
-    padding: 10px;
     /* border: 1px solid whitesmoke; */
-    border-radius: 10px;
-    transition: border 100ms ease-in;
-    letter-spacing: 6px;
     appearance: none;
     border: none;
-    border-bottom: 5px solid black;
-    background-color: rgba(66, 64, 61, 0.355);
     opacity: 0;
 }
 
-input::placeholder {
-    color: whitesmoke;
-    font-size: 15px;
-    letter-spacing: 10px;
-    text-shadow: 0px 0px 9px rgba(0, 0, 0, 1);
-}
-
-input:focus {
-    /* border: 3px solid whitesmoke; */
-    font-weight: 800;
-
-}
-
-input:focus::placeholder {
-    font-weight: 800;
-}
 
 .container {
     display: flex;
@@ -95,8 +71,6 @@ input:focus::placeholder {
 
 .stats {
     /* border: 4px solid whitesmoke; */
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-    border-radius: 10px ;
     width: 200px;
     position: absolute;
     bottom: 10px;
@@ -105,10 +79,7 @@ input:focus::placeholder {
     /* box-shadow: 0px 0px 9px rgba(0, 0, 0, 1); */
 }
 
-.time {
-    border-bottom: 3px solid whitesmoke ;
-    padding-bottom: 11px;
-}
+
 
 .start {
     position: absolute;
@@ -120,7 +91,6 @@ input:focus::placeholder {
 
 .play {
     cursor: pointer;
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
     padding: 10px;
 }
 
@@ -133,7 +103,6 @@ input:focus::placeholder {
 
 .restart {
     cursor: pointer;
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
     padding: 10px;
 }
 
@@ -170,14 +139,6 @@ letter {
 }
 
 
-
-/* .output {
-    max-width: 700px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: left;
-    font-size: 27px;
-} */
 
 .cursor {
     border-right: 1px solid black;

@@ -1,6 +1,6 @@
                                                                                     // ELEMENTI
 
-const RANDOM_QUOTE_API_URL = 'http://api.quotable.io/random?minLength=300&maxLength=500';
+const RANDOM_QUOTE_API_URL = 'https://random-word-api.herokuapp.com/word?number=40';
 let output = document.querySelector('.output');
 let phrase = document.querySelector('.phrase');
 let input = document.querySelector('.user-input');
@@ -19,6 +19,8 @@ let previousLength = 0;
 let highestScore = 0;
 let isPlaying = false;
 let countdownInterval;
+let currentScore = 0;
+let quote = '';
 
                                                                                     //FUNZIONI
 
@@ -36,6 +38,7 @@ function countdown() {
         if (remain <= 0) {
             clearInterval(countdownInterval)
             isPlaying = false;
+            input.disabled = true;
         }
     }, 1000)
 
@@ -46,10 +49,13 @@ function countdown() {
 
 //clicco play
 async function startTimer() {
+    input.disabled = false;
     if (!isPlaying) {
         isPlaying = true;
         await getNextQuote();
+        countdown()
         input.focus()
+
     }
     
 }
@@ -64,6 +70,7 @@ function restartTimer() {
     input.value = '';
     score.textContent = 'score: 0'
     isPlaying = false;
+    currentScore = 0;
 
 }
 
@@ -72,16 +79,16 @@ function restartTimer() {
 function getRandomQuote() {
     return fetch(RANDOM_QUOTE_API_URL)
     .then(response => response.json())
-    .then(data => data.content)
+    .then(data => data.join(' '))
 }
 
 
 
 //salvataggio frase
 async function getNextQuote() {
-    const quote = await getRandomQuote()
+    quote = await getRandomQuote()
+    console.log(quote)
     phrase.innerHTML = ''
-    console.log(phrase)
 
     quote.split('').forEach(char => {
         const charSpan = document.createElement('span');
@@ -95,10 +102,8 @@ async function getNextQuote() {
 
                                                                                     //EVENT LISTENER
 
-let currentScore = 0;
 
 input.addEventListener('input', () => {
-    countdown()
     const span = phrase.querySelectorAll('span')
     const inputValue = input.value.split('');
     const lengthInput = input.value.length;
@@ -135,7 +140,7 @@ input.addEventListener('input', () => {
                         outputSpan.classList.add('red')                         //FIXME: Gli spazi li conta come punto fatto
                         currentScore = 0;                                       //FIXED: togliere possibilità di ricliccare sulla phrase/play
                         score.textContent = `Score: ${currentScore}`;           //FIXME: sitemare riavvia 
-                    }  else if (lengthInput < previousLength) {
+                    }  else if (lengthInput < previousLength) {                 //TODO: aggiungere numero errori
                         currentScore -= 1;
                         score.textContent = `Score: ${currentScore}`;
                         // if (outputSpan.classList.contains('green')) {
