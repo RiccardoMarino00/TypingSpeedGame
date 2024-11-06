@@ -10,6 +10,7 @@ let play = document.querySelector('.play');
 let restart = document.querySelector('.restart');
 let video = document.querySelector('.video');
 let mistake = document.querySelector('.mistake');
+let final = document.querySelector('.final');
 let interval;
 let playClick = false;
 let parole = '';
@@ -23,6 +24,7 @@ let countdownInterval;
 let currentScore = 0;
 let quote = '';
 let mistakes = 0;
+let audio;
 
                                                                                     //FUNZIONI
 
@@ -41,6 +43,13 @@ function countdown() {
             clearInterval(countdownInterval)
             isPlaying = false;
             input.disabled = true;
+            final.classList.remove('final');
+            final.classList.add('final-gamend')
+
+            if(audio) {
+                audio.pause();
+                audio.currentTime = 0;
+            }
         }
     }, 1000)
 
@@ -58,7 +67,7 @@ async function startTimer() {
         countdown()
         input.focus()
         mistakes = 0;
-
+        playAudioTension();
     }
     
 }
@@ -75,6 +84,12 @@ function restartTimer() {
     isPlaying = false;
     currentScore = 0;
     mistakes = 0;
+    final.classList.add('final');
+    final.classList.remove('final-gamend')
+    if(audio) {
+        audio.pause();
+        audio.currentTime = 0;
+    }
 
 }
 
@@ -102,10 +117,26 @@ async function getNextQuote() {
     input.value = null;
 }
 
+function playAudioButton() {
+    let audio = new Audio("./img/button.mp3")
+    audio.volume = 0.2
+    audio.play();
+}
+
+function playAudioStart() {
+    let audio = new Audio("./img/start.mp3");
+    audio.play();
+}
+
+function playAudioTension() {
+    let audio = new Audio("./img/tension.mp3");
+    audio.play();
+}
+
 
 
                                                                                     //EVENT LISTENER
-
+input.addEventListener('input', playAudioButton);
 
 input.addEventListener('input', () => {
     const span = phrase.querySelectorAll('span')
@@ -181,6 +212,7 @@ input.addEventListener('input', () => {
 
 
 play.addEventListener('click', startTimer );
+play.addEventListener('click', playAudioStart)
 
 restart.addEventListener('click', restartTimer );
 
