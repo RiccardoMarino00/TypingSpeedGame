@@ -200,11 +200,32 @@ letter {
     .phrase {
         font-size: 20px;
     }
+
+    form input {
+        /* width: 200px; */
+        background-color: rgba(31, 31, 32, 0.6);
+        outline: none;
+        /* border: 1px solid whitesmoke; */
+        /* appearance: none; */
+        border-bottom: 3px solid white ;
+        opacity: 1;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        color: whitesmoke;
+
+    }
 }
 
 @media screen and (max-width: 1008px) {
     .phrase {
         font-size: 25px;
+    }
+}
+
+
+@media screen and (max-width: 500px) {
+    .phrase {
+        font-size: 18px;
     }
 }
 
