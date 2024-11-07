@@ -11,6 +11,8 @@ let restart = document.querySelector('.restart');
 let video = document.querySelector('.video');
 let mistake = document.querySelector('.mistake');
 let final = document.querySelector('.final');
+let wpmEl = document.querySelector('.wpm');
+let cpmEl = document.querySelector('.cpm');
 let interval;
 let playClick = false;
 let parole = '';
@@ -24,7 +26,11 @@ let countdownInterval;
 let currentScore = 0;
 let quote = '';
 let mistakes = 0;
-let audio;
+let wpm = 0;
+// let audio;
+let audio = new Audio("./img/background.mp3");
+let errorAudio = new Audio("./img/error.mp3")
+
 
                                                                                     //FUNZIONI
 
@@ -50,6 +56,11 @@ function countdown() {
                 audio.pause();
                 audio.currentTime = 0;
             }
+
+            wpm = currentScore / 5;
+            wpmEl.textContent = `WPM: ${wpm}`;
+            cpmEl.textContent = `CPM: ${currentScore}`;
+            
         }
     }, 1000)
 
@@ -80,10 +91,11 @@ function restartTimer() {
     phrase.textContent = 'Play';
     output.textContent = [];
     input.value = '';
-    score.textContent = 'score: 0'
+    score.textContent = 'Score: 0'
     isPlaying = false;
     currentScore = 0;
     mistakes = 0;
+    mistake.textContent = 'Mistakes: 0';
     final.classList.add('final');
     final.classList.remove('final-gamend')
     if(audio) {
@@ -129,13 +141,13 @@ function playAudioStart() {
 }
 
 function playAudioTension() {
-    let audio = new Audio("./img/tension.mp3");
     audio.play();
 }
 
 
 
                                                                                     //EVENT LISTENER
+
 input.addEventListener('input', playAudioButton);
 
 input.addEventListener('input', () => {
@@ -169,6 +181,8 @@ input.addEventListener('input', () => {
                                     plusOne.remove();
                                 }, 1000);
                             }
+                            
+
 
                     } else if ( lengthInput === 0) {
                         outputSpan.classList.remove('green')                    //FIXME: Non funziona più cancellazione punti
@@ -193,7 +207,9 @@ input.addEventListener('input', () => {
                         outputSpan.classList.remove('green')
                         outputSpan.classList.add('red')
                         mistakes += 1;
-                        mistake.textContent = `Mistakes: ${mistakes}`
+                        mistake.textContent = `Mistakes: ${mistakes}`;
+                        // errorAudio.volume = 1;
+                        // errorAudio.play();
                     }
 
                     if (lengthInput === i) {
