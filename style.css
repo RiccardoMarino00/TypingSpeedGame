@@ -27,10 +27,10 @@ html {
 
 
 .phrase {
-    /* max-width: 80px; */
+    max-width: 1200px;
     /* border: 1px solid whitesmoke; */
     padding: 10px;
-    font-size: 40px;
+    font-size: 35px;
     text-shadow: 0px 0px 9px rgba(0, 0, 0, 1);
     /* display: flex;
     justify-content: flex-start; */
@@ -60,6 +60,8 @@ form input {
     align-items: center;
     text-align: center;
     gap: 45px;
+    width: 100vw;
+    height: 100vh;
 }
 
 .container h1 {

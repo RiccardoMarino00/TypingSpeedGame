@@ -1,6 +1,6 @@
                                                                                     // ELEMENTI
 
-const RANDOM_QUOTE_API_URL = 'https://random-word-api.herokuapp.com/word?number=40';
+const RANDOM_QUOTE_API_URL = 'https://it.wikipedia.org/api/rest_v1/page/random/summary';
 let output = document.querySelector('.output');
 let phrase = document.querySelector('.phrase');
 let input = document.querySelector('.user-input');
@@ -110,7 +110,7 @@ function restartTimer() {
 function getRandomQuote() {
     return fetch(RANDOM_QUOTE_API_URL)
     .then(response => response.json())
-    .then(data => data.join(' '))
+    .then(data => data.extract)
 }
 
 
@@ -137,10 +137,12 @@ function playAudioButton() {
 
 function playAudioStart() {
     let audio = new Audio("./img/start.mp3");
+    audio.volume = 0.2;
     audio.play();
 }
 
 function playAudioTension() {
+    audio.volume = 0.1;
     audio.play();
 }
 
@@ -154,6 +156,38 @@ input.addEventListener('input', () => {
     const span = phrase.querySelectorAll('span')
     const inputValue = input.value.split('');
     const lengthInput = input.value.length;
+    const lastInput = input.value.length;
+    const lastSpan = span[lengthInput]; 
+    const penultimoSpan = span[lengthInput - 1 ]
+    const quoteLength = span.length;
+    
+    if ( lengthInput === quoteLength) {
+        getNextQuote()
+    }
+
+
+    if (lengthInput < previousLength) {
+
+        // Verifica se era una lettera corretta (green) e rimuovila
+        if (lastSpan && lastSpan.classList.contains('green')) {
+            lastSpan.classList.remove('green');
+            currentScore -= 1;
+            score.textContent = `Score: ${currentScore}`;
+        } else if (lastSpan && lastSpan.classList.contains('red')) {
+            lastSpan.classList.remove('red');
+            mistakes -= 1;
+            mistake.textContent = `Mistakes: ${mistakes}`                       
+        }
+    } else if ( lengthInput > previousLength) {
+        if (  penultimoSpan && penultimoSpan.innerHTML !== inputValue[lengthInput - 1] ) {
+            console.log('Ultimo carattere input:', inputValue[lengthInput - 1]);
+            console.log('Penultimo span:', penultimoSpan.innerText);
+            console.log('secondo if fuori foreach')
+            mistakes += 1;
+            mistake.textContent = `Mistakes: ${mistakes}` 
+        }
+       
+    }
  
     span.forEach((outputSpan, i) => {
             const inputChar = inputValue[i]
@@ -185,29 +219,16 @@ input.addEventListener('input', () => {
 
 
                     } else if ( lengthInput === 0) {
-                        outputSpan.classList.remove('green')                    //FIXME: Non funziona più cancellazione punti
-                        outputSpan.classList.add('red')                         //FIXME: Gli spazi li conta come punto fatto
-                        currentScore = 0;                                       //FIXED: togliere possibilità di ricliccare sulla phrase/play
-                        score.textContent = `Score: ${currentScore}`;           //FIXED: sitemare riavvia 
-                    }  else if (lengthInput < previousLength) {                 //TODO: aggiungere numero errori
-                        currentScore -= 1;
-                        score.textContent = `Score: ${currentScore}`;
-                        // if (outputSpan.classList.contains('green')) {
-                        //     const minusOne = document.createElement('span');
-                        //     minusOne.innerText = '-1';
-                        //     minusOne.classList.add('float-up-error');
-                        //     score.appendChild(minusOne);
-                        //     // Rimuove l'elemento dopo l'animazione
-                        //     setTimeout(() => {
-                        //         minusOne.remove();
-                        //     }, 1000);
-                        // }
-                        
-                    } else if (inputChar !== outputSpan.innerText) {
+                        outputSpan.classList.remove('green')                   
+                        outputSpan.classList.add('red')                         
+                        currentScore = 0;                                       
+                        score.textContent = `Score: ${currentScore}`;   
+                 
+                     
+                    } else if (inputChar !== outputSpan.innerText && lengthInput > previousLength) {
                         outputSpan.classList.remove('green')
                         outputSpan.classList.add('red')
-                        mistakes += 1;
-                        mistake.textContent = `Mistakes: ${mistakes}`;
+                    
                         // errorAudio.volume = 1;
                         // errorAudio.play();
                     }
@@ -219,10 +240,12 @@ input.addEventListener('input', () => {
                         span[i].classList.remove('currentLetter')
 
                     }
-           
             
     })
     // countPoints()
+    previousLength = lengthInput;
+    console.log(previousLength)
+    console.log(lengthInput)
 })
 
 
@@ -234,9 +257,12 @@ restart.addEventListener('click', restartTimer );
 
 
 
-
-
-
+//TODO:sistemare calcolo ed eliminazione errori
+//FIXME: Gli spazi li conta come punto fatto
+//FIXME: la prima lettera digitata a volte non viene subito colorata di bianco
+//TODO: animazione -1
+//TODO: aggiungere controllo che se utente ha terminato la frase e rimane ancora tempo allora mostra nuova frase
+//FIXME: sistemare CSS
 
 
 // function creatag() {
