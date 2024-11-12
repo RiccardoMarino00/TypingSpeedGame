@@ -13,6 +13,7 @@ let mistake = document.querySelector('.mistake');
 let final = document.querySelector('.final');
 let wpmEl = document.querySelector('.wpm');
 let cpmEl = document.querySelector('.cpm');
+let resEl = document.querySelector('.res');
 let interval;
 let playClick = false;
 let parole = '';
@@ -51,7 +52,8 @@ function countdown() {
             input.disabled = true;
             final.classList.remove('final');
             final.classList.add('final-gamend')
-
+            let win = new Audio("./img/win.mp3")
+            win.play()
             if(audio) {
                 audio.pause();
                 audio.currentTime = 0;
@@ -60,6 +62,21 @@ function countdown() {
             wpm = currentScore / 5;
             wpmEl.textContent = `WPM: ${wpm}`;
             cpmEl.textContent = `CPM: ${currentScore}`;
+            phrase.textContent = '';
+
+            if (wpm < 10) {
+                resEl.textContent = 'La velocità media di battitura di una persona inesperta è circa 10-20 WPM. Continua ad allenarti! Prova a migliorare la tua postura e usa tutte le dita'
+            } else if (wpm >= 10 && wpm < 20) {
+                resEl.textContent = 'Questo è il livello di battitura di una persona che digita con due dita. Prova ad allenarti a digitare senza guardare la tastiera! Sapevi che digitare senza guardare la tastiera (touch typing) può migliorare la tua velocità e precisione?'
+            } else if (wpm >= 20 && wpm < 40 ) {
+                resEl.textContent = 'Ottimo, sei nella media! La velocità media di battitura è 30-40 WPM per chi non pratica regolarmente. Ora prova a concentrarti sulla precisione e a non correggere troppo gli errori.'
+            } else if (wpm >= 40 && wpm < 60 ) {
+                resEl.textContent = 'Sei più veloce della maggior parte delle persone! Stai raggiungendo la velocità di una persona che digita regolarmente.'
+            } else if (wpm >= 60 && wpm < 80 ) {
+                resEl.textContent = 'Impressionante! La velocità media di una persona che usa la tastiera regolarmente è 60-70 WPM. Sei vicino ai professionisti!'
+            } else {
+                resEl.textContent = 'Straordinario! Solo il 10% delle persone raggiunge questa velocità. Sei tra i migliori. Per sfidarti ulteriormente, prova a battere il tuo record personale e confrontalo con quello dei dattilografi professionisti, che superano anche i 100 WPM!'
+            }
             
         }
     }, 1000)
@@ -102,6 +119,7 @@ function restartTimer() {
         audio.pause();
         audio.currentTime = 0;
     }
+    win.pause()
 
 }
 
@@ -115,10 +133,10 @@ function getRandomQuote() {
 
 
 
+
 //salvataggio frase
 async function getNextQuote() {
     quote = await getRandomQuote()
-    console.log(quote)
     phrase.innerHTML = ''
 
     quote.split('').forEach(char => {
@@ -180,9 +198,6 @@ input.addEventListener('input', () => {
         }
     } else if ( lengthInput > previousLength) {
         if (  penultimoSpan && penultimoSpan.innerHTML !== inputValue[lengthInput - 1] ) {
-            console.log('Ultimo carattere input:', inputValue[lengthInput - 1]);
-            console.log('Penultimo span:', penultimoSpan.innerText);
-            console.log('secondo if fuori foreach')
             mistakes += 1;
             mistake.textContent = `Mistakes: ${mistakes}` 
         }
@@ -244,8 +259,6 @@ input.addEventListener('input', () => {
     })
     // countPoints()
     previousLength = lengthInput;
-    console.log(previousLength)
-    console.log(lengthInput)
 })
 
 
@@ -263,6 +276,7 @@ restart.addEventListener('click', restartTimer );
 //TODO: animazione -1
 //TODO: aggiungere controllo che se utente ha terminato la frase e rimane ancora tempo allora mostra nuova frase
 //FIXME: sistemare CSS
+//TODO: aggiungere frasi finali in base al punteggio fatto
 
 
 // function creatag() {

@@ -1,5 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Voces&display=swap');
 
+.back {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1; /* Mette il video dietro al contenuto */
+}
+
+.res {
+    max-width: 796px;
+    font-size: 25px;
+    text-align: center;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -10,6 +26,7 @@ body {
     background-position: center;
     background-clip: content-box;
     overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 html {
@@ -101,12 +118,13 @@ form input {
 }
 
 .final {
-    height: 600px; width: 600px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: none;
+    height: 600px; width: 600px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: none; background: transparent;
 }
 
 .final-gamend {
     height: 300px; width: 100%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: block;
-    background-color: rgb(255, 255, 255);
+    /* background-color: rgb(255, 255, 255); */
+    background: transparent;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -114,7 +132,7 @@ form input {
     font-size: 38px;
     text-shadow: 0px 0px 9px rgba(0, 0, 0, 1);
     color: white;
-    background: url(./img/670622.jpg) center;
+    /* background: url(./img/670622.jpg) center; */
     padding-top: 90px;
     font-weight: 900;
 }
@@ -206,8 +224,7 @@ letter {
         text-shadow: 0px 0px 9px rgba(0, 0, 0, 1);
         /* box-shadow: 0px 0px 9px rgba(0, 0, 0, 1); */
         display: flex;
-        justify-content: space-around;
-        gap: 30px;
+        justify-content: space-evenly;
     }
 
     .time {
@@ -241,7 +258,8 @@ letter {
     
     .final-gamend {
         height: 300px; width: 100%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: block;
-        background-color: rgb(255, 255, 255);
+        /* background-color: rgb(255, 255, 255); */
+        background: transparent;
         border-radius: 10px;
         display: flex;
         flex-direction: column;
@@ -249,10 +267,15 @@ letter {
         font-size: 20px;
         text-shadow: 0px 0px 9px rgba(0, 0, 0, 1);
         color: white;
-        background: url(./img/670622.jpg) center;
+        /* background: url(./img/670622.jpg) center; */
         padding-top: 90px;
         font-weight: 900;
     }
+
+    .final-gamend {
+        height: 600px;
+        justify-content: space-around;
+}
 }
 
 @media screen and (max-width: 1008px) {
