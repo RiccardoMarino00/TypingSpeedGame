@@ -264,6 +264,15 @@ input.addEventListener('input', () => {
 })
 
 
+input.addEventListener('blur', (e) => {
+    // Se l'utente cerca di uscire dall'input, forziamo di nuovo il focus
+    if (isPlaying) {
+        e.preventDefault();  // Evita la perdita di focus
+        input.focus();  // Ristabilisce il focus
+    }
+});
+
+
 
 play.addEventListener('click', startTimer );
 play.addEventListener('click', playAudioStart)
