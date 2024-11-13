@@ -189,12 +189,12 @@ input.addEventListener('input', () => {
     if (lengthInput < previousLength) {
 
         // Verifica se era una lettera corretta (green) e rimuovila
-        if (lastSpan && lastSpan.classList.contains('green')) {
-            lastSpan.classList.remove('green');
+        if (lastSpan && lastSpan.classList.contains('correct')) {
+            lastSpan.classList.remove('correct');
             currentScore -= 1;
             score.textContent = `Score: ${currentScore}`;
-        } else if (lastSpan && lastSpan.classList.contains('red')) {
-            lastSpan.classList.remove('red');
+        } else if (lastSpan && lastSpan.classList.contains('error')) {
+            lastSpan.classList.remove('error');
             mistakes -= 1;
             mistake.textContent = `Mistakes: ${mistakes}`                       
         }
@@ -210,16 +210,16 @@ input.addEventListener('input', () => {
             const inputChar = inputValue[i]
 
                     if (inputChar === undefined) {
-                        outputSpan.classList.remove('green')
-                        outputSpan.classList.remove('red')
+                        outputSpan.classList.remove('correct')
+                        outputSpan.classList.remove('error')
                         
 
                     } else if (inputChar === outputSpan.innerText && lengthInput > previousLength) {
                             
-                            if (!outputSpan.classList.contains('green')) {
-                                outputSpan.classList.add('green')
-                                outputSpan.classList.remove('red')
-                                currentScore += 1;
+                            if (!outputSpan.classList.contains('correct')) {
+                                outputSpan.classList.add('correct')
+                                outputSpan.classList.remove('error')
+                                currentScore += 10;
                                 score.textContent = `Score: ${currentScore}`;
                                 // Animazione +1
                                 const plusOne = document.createElement('span');
@@ -236,15 +236,15 @@ input.addEventListener('input', () => {
 
 
                     } else if ( lengthInput === 0) {
-                        outputSpan.classList.remove('green')                   
-                        outputSpan.classList.add('red')                         
+                        outputSpan.classList.remove('correct')                   
+                        outputSpan.classList.add('error')                         
                         currentScore = 0;                                       
                         score.textContent = `Score: ${currentScore}`;   
                  
                      
                     } else if (inputChar !== outputSpan.innerText && lengthInput > previousLength) {
-                        outputSpan.classList.remove('green')
-                        outputSpan.classList.add('red')
+                        outputSpan.classList.remove('correct')
+                        outputSpan.classList.add('error')
                     
                         // errorAudio.volume = 1;
                         // errorAudio.play();
