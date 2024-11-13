@@ -219,7 +219,7 @@ input.addEventListener('input', () => {
                             if (!outputSpan.classList.contains('correct')) {
                                 outputSpan.classList.add('correct')
                                 outputSpan.classList.remove('error')
-                                currentScore += 10;
+                                currentScore += 1;
                                 score.textContent = `Score: ${currentScore}`;
                                 // Animazione +1
                                 const plusOne = document.createElement('span');
