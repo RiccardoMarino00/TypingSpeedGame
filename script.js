@@ -144,7 +144,8 @@ async function getNextQuote() {
         charSpan.innerText = char;
         phrase.appendChild(charSpan)
     })
-    input.value = null;
+    input.value = '';
+    previousLength = 0;
 }
 
 function playAudioButton() {
@@ -181,6 +182,7 @@ input.addEventListener('input', () => {
     
     if ( lengthInput === quoteLength) {
         getNextQuote()
+
     }
 
 
@@ -270,13 +272,9 @@ restart.addEventListener('click', restartTimer );
 
 
 
-//TODO:sistemare calcolo ed eliminazione errori
-//FIXME: Gli spazi li conta come punto fatto
-//FIXME: la prima lettera digitata a volte non viene subito colorata di bianco
+//DONE: la prima lettera digitata a volte non viene subito colorata di bianco
 //TODO: animazione -1
-//TODO: aggiungere controllo che se utente ha terminato la frase e rimane ancora tempo allora mostra nuova frase
 //FIXME: sistemare CSS
-//TODO: aggiungere frasi finali in base al punteggio fatto
 
 
 // function creatag() {
