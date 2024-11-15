@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Voces&display=swap');
 
+.myChart {
+    position: relative;
+    bottom: 174%;
+    right: 28%;
+}
+
+
 .back {
     position: fixed;
     top: 0;
@@ -42,10 +49,10 @@ body {
 
 
 .phrase {
-    max-width: 1200px;
+    max-width: 1300px;
     /* border: 1px solid whitesmoke; */
     padding: 10px;
-    font-size: 35px;
+    font-size: 30px;
     /* text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); */
     font-weight: bolder;
     /* display: flex;

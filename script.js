@@ -1,5 +1,7 @@
                                                                                     // ELEMENTI
 
+
+
 const RANDOM_QUOTE_API_URL = 'https://it.wikipedia.org/api/rest_v1/page/random/summary';
 let output = document.querySelector('.output');
 let phrase = document.querySelector('.phrase');
@@ -31,6 +33,11 @@ let wpm = 0;
 // let audio;
 let audio = new Audio("./img/background.mp3");
 let errorAudio = new Audio("./img/error.mp3")
+let myChart = null;
+let wpmChart = [];
+let timeChart = [];
+let mistakeChart = [];
+
 
 
                                                                                     //FUNZIONI
@@ -46,7 +53,12 @@ function countdown() {
         remain--;
         time.innerHTML = remain;
 
+        if (remain % 5 === 0 && remain > 0) {
+            aggiornaGrafico(currentScore / 5, 60 - remain);
+        }
+
         if (remain <= 0) {
+            phrase.innerHTML = '';
             clearInterval(countdownInterval)
             isPlaying = false;
             input.disabled = true;
@@ -59,10 +71,23 @@ function countdown() {
                 audio.currentTime = 0;
             }
 
+
             wpm = currentScore / 5;
             wpmEl.textContent = `WPM: ${wpm}`;
             cpmEl.textContent = `CPM: ${currentScore}`;
             phrase.textContent = '';
+
+            if (myChart) {
+                myChart.destroy();
+                myChart = null;
+                wpmChart = [];
+                timeChart = [];
+                mistakeChart = [];
+
+            }
+            
+            aggiornaGrafico(wpm, 60);
+            mostraGrafico()
 
             if (wpm < 10) {
                 resEl.textContent = 'La velocità media di battitura di una persona inesperta è circa 10-20 WPM. Continua ad allenarti! Prova a migliorare la tua postura e usa tutte le dita'
@@ -119,7 +144,15 @@ function restartTimer() {
         audio.pause();
         audio.currentTime = 0;
     }
-    win.pause()
+
+    wpmChart = [];
+    timeChart = [];
+    mistakeChart = [];
+
+    if (myChart) {
+        myChart.destroy();
+        myChart = null;
+    }
 
 }
 
@@ -163,6 +196,145 @@ function playAudioStart() {
 function playAudioTension() {
     audio.volume = 0.1;
     audio.play();
+}
+
+                //   MAPPA
+
+                function mostraGrafico() {
+
+                    const canvas = document.querySelector('.myChart');
+                
+                    if (canvas) {
+                
+                        const ctx = canvas.getContext('2d');
+                        console.log(wpm)
+                        console.log(mistakeChart)
+                
+                        myChart = new Chart(ctx, {
+                            type: 'line', // line, bar, pie, bubble
+                            data: {
+                                labels: timeChart,
+                                datasets: [
+                                    {
+                                        label: 'Parole per intervallo di tempo',
+                                        data: wpmChart, // qui devi passare un array di valori per ogni intervallo
+                                        backgroundColor: 'rgb(93, 41, 75)',
+                                        borderColor: 'rgba(255, 255, 255, 1)',
+                                        borderWidth: 2,
+                                        pointRadius: 3, // Aumenta la dimensione dei punti
+                                        pointBackgroundColor: 'rgba(255, 255, 255, 1)', // Colore dei punti
+                                        // fill: true, // Riempi l'area sotto la linea
+                                        tension: 0.4, // Rende la curva della linea più fluida
+                                    },
+                                    {
+                                        label: 'Errori per intervallo di tempo',
+                                        data: mistakeChart,
+                                        backgroundColor: 'rgb(93, 41, 75)',
+                                        borderColor: 'rgba(255, 255, 255, 1)',
+                                        borderWidth: 2,
+                                        pointRadius: 3, // Aumenta la dimensione dei punti
+                                        pointBackgroundColor: 'rgb(255, 0, 0)', // Colore dei punti
+                                        // fill: true, // Riempi l'area sotto la linea
+                                        tension: 0.4, // Rende la curva della linea più fluida
+                                    },
+                                ]
+                            },
+                            options: {
+                                scales: {
+                                    x: {
+                                        ticks: {
+                                            color: '#000', // Colore dei numeri sull'asse X
+                                            font: {
+                                                size: 14, // Aumenta la dimensione del font
+                                                weight: 'bold', // Rendi il testo più visibile
+                                            },
+                                        },
+                                        title: {
+                                            display: true,
+                                            text: 'Secondi',
+                                            color: '#000',
+                                            font: {
+                                                size: 16,
+                                                weight: 'bold',
+                                            },
+                                        },
+                                        grid: {
+                                            color: 'rgba(0, 0, 0, 0.3)', 
+                                            lineWidth: 2, // Spessore delle linee
+                                            borderColor: 'rgba(0, 0, 0, 0.5)', // Colore del bordo dell'asse
+                                            borderWidth: 2, // Spessore del bordo dell'asse
+                                        },
+                                    },
+                                    y: {
+                                        ticks: {
+                                            color: '#000', // Colore dei numeri sull'asse Y
+                                            font: {
+                                                size: 14, // Aumenta la dimensione del font
+                                                weight: 'bold', // Rendi il testo più visibile
+                                            },
+                                        },
+                                        beginAtZero: true,
+                                        title: {
+                                            display: true,
+                                            text: 'WPM',
+                                            color: '#000',
+                                            font: {
+                                                size: 16,
+                                                weight: 'bold',
+                                            },
+                                        },
+                                        grid: {
+                                            color: 'rgba(0, 0, 0, 0.3)', 
+                                            lineWidth: 2, // Spessore delle linee
+                                            borderColor: 'rgba(0, 0, 0, 0.5)', // Colore del bordo dell'asse
+                                            borderWidth: 2, // Spessore del bordo dell'asse
+                                        },
+                                    }
+                                },
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom', // Posizione della legenda
+                                        labels: {
+                                            color: '#000', // Colore delle etichette nella legenda
+                                            font: {
+                                                size: 14,
+                                                weight: 'bold',
+                                            },
+                                        },
+                                    },
+                                    tooltip: {
+                                        backgroundColor: 'rgba(0, 0, 0, 0.8)', // Colore di sfondo del tooltip
+                                        titleColor: '#fff', // Colore del titolo del tooltip
+                                        bodyColor: '#fff', // Colore del corpo del tooltip
+                                        borderColor: '#fff', // Colore del bordo del tooltip
+                                        borderWidth: 1, // Spessore del bordo
+                                    },
+                                },
+                               
+                            }
+                                
+                        });
+                    } else {
+                        console.error('Canvas element not found');
+                    }
+                }
+                
+
+                                   
+
+
+
+function aggiornaGrafico(wpm, secondi) {
+    wpmChart.push(wpm);
+    timeChart.push(secondi);
+    mistakeChart.push(mistakes)
+
+    if(myChart) {
+        myChart.data.labels = timeChart;
+        myChart.data.datasets[0].data = wpmChart;
+        myChart.data.datasets[1].data = mistakeChart
+        myChart.update();
+    }
 }
 
 
@@ -279,6 +451,8 @@ play.addEventListener('click', playAudioStart)
 
 restart.addEventListener('click', restartTimer );
 
+
+ 
 
 
 //DONE: la prima lettera digitata a volte non viene subito colorata di bianco

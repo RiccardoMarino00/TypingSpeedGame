@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "@faker-js/faker": "^9.0.3"
+  },
+  "dependencies": {
+    "chart.js": "^4.4.6"
   }
 }
