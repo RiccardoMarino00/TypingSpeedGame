@@ -37,7 +37,8 @@ let myChart = null;
 let wpmChart = [];
 let timeChart = [];
 let mistakeChart = [];
-
+let showGraphButton = document.querySelector('.show-graph');
+let graphContainer = document.querySelector('.chart-container');
 
 
                                                                                     //FUNZIONI
@@ -71,6 +72,10 @@ function countdown() {
                 audio.currentTime = 0;
             }
 
+            if(showGraphButton.classList.contains('d-none')) {
+                showGraphButton.classList.remove('d-none')
+            }
+
 
             wpm = currentScore / 5;
             wpmEl.textContent = `WPM: ${wpm}`;
@@ -87,7 +92,7 @@ function countdown() {
             }
             
             aggiornaGrafico(wpm, 60);
-            mostraGrafico()
+            creaGrafico()
 
             if (wpm < 10) {
                 resEl.textContent = 'La velocità media di battitura di una persona inesperta è circa 10-20 WPM. Continua ad allenarti! Prova a migliorare la tua postura e usa tutte le dita'
@@ -153,6 +158,16 @@ function restartTimer() {
         myChart.destroy();
         myChart = null;
     }
+    if (!graphContainer.classList.contains('d-none')) {
+        graphContainer.classList.add('d-none');
+        graphContainer.classList.remove('d-block')
+    } 
+
+    if (final.classList.contains('opacity-0')) {
+        final.classList.remove('opacity-0')
+    }
+
+    showGraphButton.classList.add('d-none')
 
 }
 
@@ -198,9 +213,34 @@ function playAudioTension() {
     audio.play();
 }
 
+
+function mostraGrafico() {
+    if (graphContainer.classList.contains('d-none')) {
+        graphContainer.classList.remove('d-none');
+        graphContainer.classList.add('d-block');
+    } else if (graphContainer.classList.contains('d-block')) {
+        graphContainer.classList.remove('d-block');
+        graphContainer.classList.add('d-none');
+    }
+
+    if (!final.classList.contains('opacity-0')) {
+        final.classList.add('opacity-0')
+        final.classList.remove('opacity-1')
+    } else if (final.classList.contains('opacity-0')) {
+        final.classList.remove('opacity-0')
+        final.classList.add('opacity-1')
+    }
+
+    if(showGraphButton.textContent === 'Mostra Grafico') {
+        showGraphButton.textContent = 'Nascondi Grafico'
+    } else if (showGraphButton.textContent === 'Nascondi Grafico') {
+        showGraphButton.textContent = 'Mostra Grafico'
+    }
+}
+
                 //   MAPPA
 
-                function mostraGrafico() {
+                function creaGrafico() {
 
                     const canvas = document.querySelector('.myChart');
                 
@@ -218,19 +258,19 @@ function playAudioTension() {
                                     {
                                         label: 'Parole per intervallo di tempo',
                                         data: wpmChart, // qui devi passare un array di valori per ogni intervallo
-                                        backgroundColor: 'rgb(93, 41, 75)',
-                                        borderColor: 'rgba(255, 255, 255, 1)',
+                                        backgroundColor: 'rgb(0, 255, 0)',
+                                        borderColor: '#fff',
                                         borderWidth: 2,
                                         pointRadius: 3, // Aumenta la dimensione dei punti
-                                        pointBackgroundColor: 'rgba(255, 255, 255, 1)', // Colore dei punti
+                                        pointBackgroundColor: 'rgba(0, 255, 10, 1)', // Colore dei punti
                                         // fill: true, // Riempi l'area sotto la linea
                                         tension: 0.4, // Rende la curva della linea più fluida
                                     },
                                     {
                                         label: 'Errori per intervallo di tempo',
                                         data: mistakeChart,
-                                        backgroundColor: 'rgb(93, 41, 75)',
-                                        borderColor: 'rgba(255, 255, 255, 1)',
+                                        backgroundColor: 'rgb(255, 0, 0)',
+                                        borderColor: '#fff',
                                         borderWidth: 2,
                                         pointRadius: 3, // Aumenta la dimensione dei punti
                                         pointBackgroundColor: 'rgb(255, 0, 0)', // Colore dei punti
@@ -243,7 +283,7 @@ function playAudioTension() {
                                 scales: {
                                     x: {
                                         ticks: {
-                                            color: '#000', // Colore dei numeri sull'asse X
+                                            color: 'rgba(192,192,192, 1)', // Colore dei numeri sull'asse X
                                             font: {
                                                 size: 14, // Aumenta la dimensione del font
                                                 weight: 'bold', // Rendi il testo più visibile
@@ -252,14 +292,14 @@ function playAudioTension() {
                                         title: {
                                             display: true,
                                             text: 'Secondi',
-                                            color: '#000',
+                                            color: '#fff',
                                             font: {
                                                 size: 16,
                                                 weight: 'bold',
                                             },
                                         },
                                         grid: {
-                                            color: 'rgba(0, 0, 0, 0.3)', 
+                                            color: 'rgba(192,192,192, 1)', 
                                             lineWidth: 2, // Spessore delle linee
                                             borderColor: 'rgba(0, 0, 0, 0.5)', // Colore del bordo dell'asse
                                             borderWidth: 2, // Spessore del bordo dell'asse
@@ -267,7 +307,7 @@ function playAudioTension() {
                                     },
                                     y: {
                                         ticks: {
-                                            color: '#000', // Colore dei numeri sull'asse Y
+                                            color: 'rgba(192,192,192, 1)', // Colore dei numeri sull'asse Y
                                             font: {
                                                 size: 14, // Aumenta la dimensione del font
                                                 weight: 'bold', // Rendi il testo più visibile
@@ -277,17 +317,18 @@ function playAudioTension() {
                                         title: {
                                             display: true,
                                             text: 'WPM',
-                                            color: '#000',
+                                            color: '#fff',
                                             font: {
                                                 size: 16,
                                                 weight: 'bold',
                                             },
                                         },
                                         grid: {
-                                            color: 'rgba(0, 0, 0, 0.3)', 
+                                            color: 'rgba(192,192,192, 1)', 
                                             lineWidth: 2, // Spessore delle linee
                                             borderColor: 'rgba(0, 0, 0, 0.5)', // Colore del bordo dell'asse
                                             borderWidth: 2, // Spessore del bordo dell'asse
+                                            backgroundColor: 'rgb(93, 41, 75)',
                                         },
                                     }
                                 },
@@ -295,7 +336,7 @@ function playAudioTension() {
                                     legend: {
                                         position: 'bottom', // Posizione della legenda
                                         labels: {
-                                            color: '#000', // Colore delle etichette nella legenda
+                                            color: '#fff', // Colore delle etichette nella legenda
                                             font: {
                                                 size: 14,
                                                 weight: 'bold',
@@ -312,8 +353,12 @@ function playAudioTension() {
                                 },
                                
                             }
+
                                 
                         });
+
+                       
+
                     } else {
                         console.error('Canvas element not found');
                     }
@@ -451,7 +496,7 @@ play.addEventListener('click', playAudioStart)
 
 restart.addEventListener('click', restartTimer );
 
-
+showGraphButton.addEventListener('click', mostraGrafico)
  
 
 
