@@ -1,47 +1,80 @@
-                                                                                    // ELEMENTI
+/////////////////////////////////////////////////////////////// ELEMENTI /////////////////////////////////////////////////////////////////////
 
-
-
+//API
 const RANDOM_QUOTE_API_URL = 'https://it.wikipedia.org/api/rest_v1/page/random/summary';
-let output = document.querySelector('.output');
+
+//Testo
 let phrase = document.querySelector('.phrase');
+
+//Text-input
 let input = document.querySelector('.user-input');
+
+//Tempo
 let time = document.querySelector('.time');
+
+//Punteggio El
 let score = document.querySelector('.score');
+
+//Tasto Inizio gioco
 let play = document.querySelector('.play');
+
+//Tasto reset gioco
 let restart = document.querySelector('.restart');
-let video = document.querySelector('.video');
+
+//Errori El
 let mistake = document.querySelector('.mistake');
+
+//Statistiche Finali
 let final = document.querySelector('.final');
+
+//WPM
 let wpmEl = document.querySelector('.wpm');
+
+//CPM
 let cpmEl = document.querySelector('.cpm');
+
+//Frase finale
 let resEl = document.querySelector('.res');
-let interval;
-let playClick = false;
-let parole = '';
-let tagletters = [];
-let lettere = [];
-let isCorrect = true;
+
+//Bottone mostra grafico 
+let showGraphButton = document.querySelector('.show-graph');
+
+//Contenitore del grafico
+let graphContainer = document.querySelector('.chart-container');
+
+//Per tenere traccia dei cambiamenti quando utente digita 
 let previousLength = 0;
-let highestScore = 0;
+
+//Condizione per verificare se utente sta giocando
 let isPlaying = false;
+
+//Per tenere traccia del tempo
 let countdownInterval;
+
+//Per Tenere traccia del punteggio
 let currentScore = 0;
+
+//Frase presa da Api
 let quote = '';
+
+//Valore per tenere traccia degli errori 
 let mistakes = 0;
+
+//Valore per tenere traccia dei wpm
 let wpm = 0;
+
 // let audio;
 let audio = new Audio("./img/background.mp3");
 let errorAudio = new Audio("./img/error.mp3")
+
+//GRAFICO
 let myChart = null;
 let wpmChart = [];
 let timeChart = [];
 let mistakeChart = [];
-let showGraphButton = document.querySelector('.show-graph');
-let graphContainer = document.querySelector('.chart-container');
 
 
-                                                                                    //FUNZIONI
+///////////////////////////////////////////////////////////////FUNZIONI///////////////////////////////////////////////////////////////
 
 
 
@@ -53,11 +86,9 @@ function countdown() {
     countdownInterval = setInterval(() => {
         remain--;
         time.innerHTML = remain;
-
         if (remain % 5 === 0 && remain > 0) {
             aggiornaGrafico(currentScore / 5, 60 - remain);
         }
-
         if (remain <= 0) {
             phrase.innerHTML = '';
             clearInterval(countdownInterval)
@@ -71,29 +102,22 @@ function countdown() {
                 audio.pause();
                 audio.currentTime = 0;
             }
-
             if(showGraphButton.classList.contains('d-none')) {
                 showGraphButton.classList.remove('d-none')
             }
-
-
             wpm = currentScore / 5;
             wpmEl.textContent = `WPM: ${wpm}`;
             cpmEl.textContent = `CPM: ${currentScore}`;
             phrase.textContent = '';
-
             if (myChart) {
                 myChart.destroy();
                 myChart = null;
                 wpmChart = [];
                 timeChart = [];
                 mistakeChart = [];
-
             }
-            
             aggiornaGrafico(wpm, 60);
             creaGrafico()
-
             if (wpm < 10) {
                 resEl.textContent = 'La velocità media di battitura di una persona inesperta è circa 10-20 WPM. Continua ad allenarti! Prova a migliorare la tua postura e usa tutte le dita'
             } else if (wpm >= 10 && wpm < 20) {
@@ -107,14 +131,9 @@ function countdown() {
             } else {
                 resEl.textContent = 'Straordinario! Solo il 10% delle persone raggiunge questa velocità. Sei tra i migliori. Per sfidarti ulteriormente, prova a battere il tuo record personale e confrontalo con quello dei dattilografi professionisti, che superano anche i 100 WPM!'
             }
-            
         }
     }, 1000)
-
-    
-
 }
-
 
 //clicco play
 async function startTimer() {
@@ -127,16 +146,15 @@ async function startTimer() {
         mistakes = 0;
         playAudioTension();
     }
-    
 }
 
 //riavvia timer
 function restartTimer() {
     time.innerHTML = '60'
     clearInterval(countdownInterval);
-    playClick = false;
+    // playClick = false;
     phrase.textContent = 'Play';
-    output.textContent = [];
+    // output.textContent = [];
     input.value = '';
     score.textContent = 'Score: 0'
     isPlaying = false;
@@ -149,11 +167,9 @@ function restartTimer() {
         audio.pause();
         audio.currentTime = 0;
     }
-
     wpmChart = [];
     timeChart = [];
     mistakeChart = [];
-
     if (myChart) {
         myChart.destroy();
         myChart = null;
@@ -162,15 +178,11 @@ function restartTimer() {
         graphContainer.classList.add('d-none');
         graphContainer.classList.remove('d-block')
     } 
-
     if (final.classList.contains('opacity-0')) {
         final.classList.remove('opacity-0')
     }
-
     showGraphButton.classList.add('d-none')
-
 }
-
 
 // chiamata api
 function getRandomQuote() {
@@ -178,9 +190,6 @@ function getRandomQuote() {
     .then(response => response.json())
     .then(data => data.extract)
 }
-
-
-
 
 //salvataggio frase
 async function getNextQuote() {
@@ -222,7 +231,6 @@ function mostraGrafico() {
         graphContainer.classList.remove('d-block');
         graphContainer.classList.add('d-none');
     }
-
     if (!final.classList.contains('opacity-0')) {
         final.classList.add('opacity-0')
         final.classList.remove('opacity-1')
@@ -230,7 +238,6 @@ function mostraGrafico() {
         final.classList.remove('opacity-0')
         final.classList.add('opacity-1')
     }
-
     if(showGraphButton.textContent === 'Mostra Grafico') {
         showGraphButton.textContent = 'Nascondi Grafico'
     } else if (showGraphButton.textContent === 'Nascondi Grafico') {
@@ -238,136 +245,127 @@ function mostraGrafico() {
     }
 }
 
-                //   MAPPA
+//   MAPPA
 
-                function creaGrafico() {
+function creaGrafico() {
 
-                    const canvas = document.querySelector('.myChart');
+    const canvas = document.querySelector('.myChart'); 
+    if (canvas) {
                 
-                    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        console.log(wpm)
+        console.log(mistakeChart)
                 
-                        const ctx = canvas.getContext('2d');
-                        console.log(wpm)
-                        console.log(mistakeChart)
-                
-                        myChart = new Chart(ctx, {
-                            type: 'line', // line, bar, pie, bubble
-                            data: {
-                                labels: timeChart,
-                                datasets: [
-                                    {
-                                        label: 'Parole per intervallo di tempo',
-                                        data: wpmChart, // qui devi passare un array di valori per ogni intervallo
-                                        backgroundColor: 'rgb(0, 255, 0)',
-                                        borderColor: '#fff',
-                                        borderWidth: 2,
-                                        pointRadius: 3, // Aumenta la dimensione dei punti
-                                        pointBackgroundColor: 'rgba(0, 255, 10, 1)', // Colore dei punti
-                                        // fill: true, // Riempi l'area sotto la linea
-                                        tension: 0.4, // Rende la curva della linea più fluida
-                                    },
-                                    {
-                                        label: 'Errori per intervallo di tempo',
-                                        data: mistakeChart,
-                                        backgroundColor: 'rgb(255, 0, 0)',
-                                        borderColor: '#fff',
-                                        borderWidth: 2,
-                                        pointRadius: 3, // Aumenta la dimensione dei punti
-                                        pointBackgroundColor: 'rgb(255, 0, 0)', // Colore dei punti
-                                        // fill: true, // Riempi l'area sotto la linea
-                                        tension: 0.4, // Rende la curva della linea più fluida
-                                    },
-                                ]
+        myChart = new Chart(ctx, {
+            type: 'line', // line, bar, pie, bubble
+            data:{
+                labels: timeChart,
+                datasets: [
+                    {
+                        label: 'Parole per intervallo di tempo',
+                        data: wpmChart, // qui devi passare un array di valori per ogni intervallo
+                        backgroundColor: 'rgb(0, 255, 0)',
+                        borderColor: '#fff',
+                        borderWidth: 2,
+                        pointRadius: 3, // Aumenta la dimensione dei punti
+                        pointBackgroundColor: 'rgba(0, 255, 10, 1)', // Colore dei punti
+                        tension: 0.4, // Rende la curva della linea più fluida
+                    },
+                    {
+                        label: 'Errori per intervallo di tempo',
+                        data: mistakeChart,
+                        backgroundColor: 'rgb(255, 0, 0)',
+                        borderColor: '#fff',
+                        borderWidth: 2,
+                        pointRadius: 3, // Aumenta la dimensione dei punti
+                        pointBackgroundColor: 'rgb(255, 0, 0)', // Colore dei punti
+                        tension: 0.4, // Rende la curva della linea più fluida
+                    },
+                ]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: 'rgba(192,192,192, 1)', // Colore dei numeri sull'asse X
+                                font: {
+                                    size: 14, // Aumenta la dimensione del font
+                                    weight: 'bold', // Rendi il testo più visibile
+                                    family: 'Voces, sans-serif'
+                                },
                             },
-                            options: {
-                                scales: {
-                                    x: {
-                                        ticks: {
-                                            color: 'rgba(192,192,192, 1)', // Colore dei numeri sull'asse X
-                                            font: {
-                                                size: 14, // Aumenta la dimensione del font
-                                                weight: 'bold', // Rendi il testo più visibile
-                                                family: 'Voces, sans-serif'
-                                            },
-                                        },
-                                        title: {
-                                            display: true,
-                                            text: 'Secondi',
-                                            color: '#fff',
-                                            font: {
-                                                size: 16,
-                                                weight: 'bold',
-                                                family: 'Voces, sans-serif'
-                                            },
-                                        },
-                                        grid: {
-                                            color: 'rgba(192,192,192, 0)', 
-                                            lineWidth: 2, // Spessore delle linee
-                                            borderColor: 'rgba(0, 0, 0, 0)', // Colore del bordo dell'asse
-                                            borderWidth: 2, // Spessore del bordo dell'asse
-                                        },
-                                    },
-                                    y: {
-                                        ticks: {
-                                            color: 'rgba(192,192,192, 1)', // Colore dei numeri sull'asse Y
-                                            font: {
-                                                size: 14, // Aumenta la dimensione del font
-                                                weight: 'bold', // Rendi il testo più visibile
-                                                family: 'Voces, sans-serif'
-                                            },
-                                        },
-                                        beginAtZero: true,
-                                        title: {
-                                            display: true,
-                                            text: 'WPM',
-                                            color: '#fff',
-                                            font: {
-                                                size: 16,
-                                                weight: 'bold',
-                                                family: 'Voces, sans-serif'
-                                            },
-                                        },
-                                        grid: {
-                                            color: 'rgba(192,192,192, 0)', 
-                                            lineWidth: 2, // Spessore delle linee
-                                            borderColor: 'rgba(0, 0, 0, 0)', // Colore del bordo dell'asse
-                                            borderWidth: 2, // Spessore del bordo dell'asse
-                                            backgroundColor: 'rgb(93, 41, 75)',
-                                        },
-                                    }
+                            title: {
+                                display: true,
+                                text: 'Secondi',
+                                color: '#fff',
+                                font: {
+                                    size: 16,
+                                    weight: 'bold',
+                                    family: 'Voces, sans-serif'
                                 },
-                                plugins: {
-                                    legend: {
-                                        position: 'bottom', // Posizione della legenda
-                                        labels: {
-                                            color: '#fff', // Colore delle etichette nella legenda
-                                            font: {
-                                                size: 14,
-                                                weight: 'bold',
-                                                family: 'Voces, sans-serif'
-                                            },
-                                        },
-                                    },
-                                    tooltip: {
-                                        backgroundColor: 'rgba(0, 0, 0, 0)', // Colore di sfondo del tooltip
-                                        titleColor: '#fff', // Colore del titolo del tooltip
-                                        bodyColor: '#fff', // Colore del corpo del tooltip
-                                        borderColor: '#fff', // Colore del bordo del tooltip
-                                        borderWidth: 1, // Spessore del bordo
-                                    },
+                            },
+                            grid: {
+                                color: 'rgba(192,192,192, 0)', 
+                                lineWidth: 2, // Spessore delle linee
+                                borderColor: 'rgba(0, 0, 0, 0)', // Colore del bordo dell'asse
+                                borderWidth: 2, // Spessore del bordo dell'asse
+                            },
+                        },
+                        y: {
+                            ticks: {
+                                color: 'rgba(192,192,192, 1)', // Colore dei numeri sull'asse Y
+                                font: {
+                                    size: 14, // Aumenta la dimensione del font
+                                    weight: 'bold', // Rendi il testo più visibile
+                                    family: 'Voces, sans-serif'
                                 },
-                               
-                            }
-
-                                
-                        });
-
-                       
-
-                    } else {
-                        console.error('Canvas element not found');
+                            },
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'WPM',
+                            color: '#fff',
+                            font: {
+                                size: 16,
+                                weight: 'bold',
+                                family: 'Voces, sans-serif'
+                            },
+                        },
+                        grid: {
+                            color: 'rgba(192,192,192, 0)', 
+                            lineWidth: 2, // Spessore delle linee
+                            borderColor: 'rgba(0, 0, 0, 0)', // Colore del bordo dell'asse
+                            borderWidth: 2, // Spessore del bordo dell'asse
+                            backgroundColor: 'rgb(93, 41, 75)',
+                        },
                     }
-                }
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom', // Posizione della legenda
+                        labels: {
+                            color: '#fff', // Colore delle etichette nella legenda
+                            font: {
+                                size: 14,
+                                weight: 'bold',
+                                family: 'Voces, sans-serif'
+                            },
+                        },
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0)', // Colore di sfondo del tooltip
+                        titleColor: '#fff', // Colore del titolo del tooltip
+                        bodyColor: '#fff', // Colore del corpo del tooltip
+                        borderColor: '#fff', // Colore del bordo del tooltip
+                        borderWidth: 1, // Spessore del bordo
+                    },
+                },              
+            }               
+        });          
+    } else {
+        console.error('Canvas element not found');
+    }
+}
                 
 
                                    
@@ -407,7 +405,6 @@ input.addEventListener('input', () => {
 
     }
 
-
     if (lengthInput < previousLength) {
 
         // Verifica se era una lettera corretta (green) e rimuovila
@@ -435,7 +432,6 @@ input.addEventListener('input', () => {
                         outputSpan.classList.remove('correct')
                         outputSpan.classList.remove('error')
                         
-
                     } else if (inputChar === outputSpan.innerText && lengthInput > previousLength) {
                             
                             if (!outputSpan.classList.contains('correct')) {
@@ -455,33 +451,23 @@ input.addEventListener('input', () => {
                                 }, 1000);
                             }
                             
-
-
                     } else if ( lengthInput === 0) {
                         outputSpan.classList.remove('correct')                   
                         outputSpan.classList.add('error')                         
                         currentScore = 0;                                       
                         score.textContent = `Score: ${currentScore}`;   
                  
-                     
                     } else if (inputChar !== outputSpan.innerText && lengthInput > previousLength) {
                         outputSpan.classList.remove('correct')
                         outputSpan.classList.add('error')
-                    
-                        // errorAudio.volume = 1;
-                        // errorAudio.play();
                     }
 
                     if (lengthInput === i) {
                         span[i].classList.add('currentLetter')
-                        // outputSpan.scrollIntoView({ behavior: "auto", block: "center", inline: "center" });
                     } else {
                         span[i].classList.remove('currentLetter')
-
                     }
-            
     })
-    // countPoints()
     previousLength = lengthInput;
 })
 
@@ -504,10 +490,62 @@ restart.addEventListener('click', restartTimer );
 showGraphButton.addEventListener('click', mostraGrafico)
  
 
-
-//DONE: la prima lettera digitata a volte non viene subito colorata di bianco
-//TODO: animazione -1
 //FIXME: sistemare CSS
+//FIXME: se finito il tempo l'utente clicca mostra grafico e dopo reset, rimane contenitore del grafico visibile
+//TODO: animazione -1
+//TODO: Offri tre livelli (facile, medio, difficile) con testi sempre più lunghi o con vocaboli più complessi.
+//TODO: Permetti agli utenti di scegliere il tempo del test (es. 30, 60, 120 secondi).
+//TODO: Oscura il testo digitato e mostra solo gli errori dopo la fine del tempo.
+//TODO: Sfida un "ghost" (il tuo punteggio migliore) o un benchmark preimpostato.
+//TODO: Mostra quali lettere o parole vengono sbagliate più spesso.
+//TODO: Grafico o contatore che mostra il WPM in tempo reale
+//TODO: Salva i risultati delle sessioni precedenti in locale (usando localStorage) e visualizza miglioramenti nel tempo.
+//TODO: cambia colore al progresso (es. passa dal rosso al verde in base alla precisione). ????
+//TODO:  Aggiungi un'opzione per salvare il punteggio su un database e confrontarlo con altri utenti.
+//TODO: Genera testi basati sui caratteri più frequentemente sbagliati dall’utente.
+//TODO: Una barra visiva che si riempie man mano che il tempo scade
+//TODO: Animazioni per "combo" (es. 10 parole consecutive corrette) o suoni motivazionali.
+//TODO:  Permetti a due utenti di competere digitando lo stesso testo in contemporanea, con punteggi aggiornati live.
+//TODO: Aggiungi testi in italiano, inglese, francese, ecc., e confronta la velocità di digitazione per ciascuna lingua. ?????
+//TODO: Rimuovi il limite di tempo e misura per quanto l’utente riesce a mantenere alte velocità e precisione.
+//TODO: Aggiungi obiettivi da sbloccare, ad esempio:
+            // "Velocista" per aver superato i 100 WPM.
+            // "Precisione Perfetta" per una sessione senza errori.
+            // Medaglie o Badge: Mostra graficamente i progressi con premi visivi.
+//TODO:  Rimuovi il limite di tempo e misura per quanto l’utente riesce a mantenere alte velocità e precisione.
+//TODO: Potenziamenti e Penalità
+        // Boosters:
+        // "Tempo extra" aggiunge secondi.
+        // "Correzione automatica" rimuove l'ultimo errore.
+        // Penalità:
+        // Riduzione del tempo per ogni errore.
+        // Oscuramento del testo per qualche secondo se l'utente sbaglia troppo.
+//TODO: Alla fine del gioco mostra:
+        // Tempo medio per parola.
+        // Tempo di reazione al cambio parola.
+        // Migliori 10 secondi della sessione.
+//TODO: Le parole appaiono e spariscono in rapida successione.
+//TODO: Mostra snippet di codice da digitare 
+//TODO: Ogni utente può scegliere un avatar che evolve man mano che migliorano le loro abilità.
+//TODO: L’utente può salvare o comporre una serie di testi preferiti
+//TODO: Cambia lo stile del gioco con temi diversi, es. "Cyberpunk" o "Retro"
+//TODO: Sistema a livelli: Guadagna punti esperienza e sali di livello per sbloccare nuovi testi o sfide.
+        // Economia virtuale: Accumula monete per acquistare potenziamenti o temi personalizzati.
+
+
+
+
+
+
+
+
+// let interval;
+// let playClick = false;
+// let parole = '';
+// let tagletters = [];
+// let lettere = [];
+// let isCorrect = true;
+// let highestScore = 0;
 
 
 // function creatag() {
