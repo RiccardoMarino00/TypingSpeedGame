@@ -287,6 +287,7 @@ function mostraGrafico() {
                                             font: {
                                                 size: 14, // Aumenta la dimensione del font
                                                 weight: 'bold', // Rendi il testo più visibile
+                                                family: 'Voces, sans-serif'
                                             },
                                         },
                                         title: {
@@ -296,12 +297,13 @@ function mostraGrafico() {
                                             font: {
                                                 size: 16,
                                                 weight: 'bold',
+                                                family: 'Voces, sans-serif'
                                             },
                                         },
                                         grid: {
-                                            color: 'rgba(192,192,192, 1)', 
+                                            color: 'rgba(192,192,192, 0)', 
                                             lineWidth: 2, // Spessore delle linee
-                                            borderColor: 'rgba(0, 0, 0, 0.5)', // Colore del bordo dell'asse
+                                            borderColor: 'rgba(0, 0, 0, 0)', // Colore del bordo dell'asse
                                             borderWidth: 2, // Spessore del bordo dell'asse
                                         },
                                     },
@@ -311,6 +313,7 @@ function mostraGrafico() {
                                             font: {
                                                 size: 14, // Aumenta la dimensione del font
                                                 weight: 'bold', // Rendi il testo più visibile
+                                                family: 'Voces, sans-serif'
                                             },
                                         },
                                         beginAtZero: true,
@@ -321,12 +324,13 @@ function mostraGrafico() {
                                             font: {
                                                 size: 16,
                                                 weight: 'bold',
+                                                family: 'Voces, sans-serif'
                                             },
                                         },
                                         grid: {
-                                            color: 'rgba(192,192,192, 1)', 
+                                            color: 'rgba(192,192,192, 0)', 
                                             lineWidth: 2, // Spessore delle linee
-                                            borderColor: 'rgba(0, 0, 0, 0.5)', // Colore del bordo dell'asse
+                                            borderColor: 'rgba(0, 0, 0, 0)', // Colore del bordo dell'asse
                                             borderWidth: 2, // Spessore del bordo dell'asse
                                             backgroundColor: 'rgb(93, 41, 75)',
                                         },
@@ -340,11 +344,12 @@ function mostraGrafico() {
                                             font: {
                                                 size: 14,
                                                 weight: 'bold',
+                                                family: 'Voces, sans-serif'
                                             },
                                         },
                                     },
                                     tooltip: {
-                                        backgroundColor: 'rgba(0, 0, 0, 0.8)', // Colore di sfondo del tooltip
+                                        backgroundColor: 'rgba(0, 0, 0, 0)', // Colore di sfondo del tooltip
                                         titleColor: '#fff', // Colore del titolo del tooltip
                                         bodyColor: '#fff', // Colore del corpo del tooltip
                                         borderColor: '#fff', // Colore del bordo del tooltip
