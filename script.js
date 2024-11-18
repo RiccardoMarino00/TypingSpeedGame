@@ -73,6 +73,8 @@ let wpmChart = [];
 let timeChart = [];
 let mistakeChart = [];
 
+let remainTime = false;
+
 
 ///////////////////////////////////////////////////////////////FUNZIONI///////////////////////////////////////////////////////////////
 
@@ -86,12 +88,19 @@ function countdown() {
     countdownInterval = setInterval(() => {
         remain--;
         time.innerHTML = remain;
+
+        if (remain > 1) {
+            remainTime = true;
+        } else {
+            remainTime = false;
+        }
+
         if (remain % 5 === 0 && remain > 0) {
             aggiornaGrafico(currentScore / 5, 60 - remain);
         }
         if (remain <= 0) {
-            phrase.innerHTML = '';
             clearInterval(countdownInterval)
+            phrase.innerHTML = '';
             isPlaying = false;
             input.disabled = true;
             final.classList.remove('final');
@@ -400,7 +409,7 @@ input.addEventListener('input', () => {
     const penultimoSpan = span[lengthInput - 1 ]
     const quoteLength = span.length;
     
-    if ( lengthInput === quoteLength) {
+    if ( lengthInput === quoteLength && remainTime === true) {
         getNextQuote()
 
     }
